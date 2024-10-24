@@ -19,12 +19,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assignment.databinding.ActivityMainBinding
 import com.example.assignment.presentation.adapter.VedioAdapter
 import com.example.assignment.presentation.viewModel.VedioViewModel
+
 /**
  * Created by Rishi Porwal
  */
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding:ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     private val vedioViewMode: VedioViewModel by viewModels {
         object : ViewModelProvider.Factory {
@@ -38,7 +39,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()) { isGranted ->
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
         if (isGranted) {
             vedioViewMode.fetchAllVedios()
         }
@@ -46,24 +48,24 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         inProgessLoader()
         setUpView()
         checkPermissionsAndLoadVideos()
     }
 
-    private fun setUpView(){
+    private fun setUpView() {
         binding.recyclerView.apply {
-            layoutManager=LinearLayoutManager(this@MainActivity)
-          vedioViewMode.videoListLiveData.observe(this@MainActivity) {
-              adapter = VedioAdapter(it,{openVedio(it.uri)})
-          }
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            vedioViewMode.videoListLiveData.observe(this@MainActivity) {
+                adapter = VedioAdapter(it, { openVedio(it.uri) })
+            }
         }
 
     }
 
-    private fun inProgessLoader(){
+    private fun inProgessLoader() {
         vedioViewMode.isLoadingLiveData.observe(this@MainActivity) { isLoading ->
             binding.apply {
                 progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
@@ -72,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun openVedio(uri:String){
+    fun openVedio(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW).apply {
             setDataAndType(Uri.parse(uri), "video/*")
             setPackage("com.mxtech.videoplayer.ad")
