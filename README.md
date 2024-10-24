@@ -1,7 +1,7 @@
 # Video Fetch App
 
 ## Description
-The Video Fetcher is an Android application built using MVVM architecture and Kotlin.
+The Video Fetcher is an Android application built using MVVM with Clean architecture and Kotlin.
 
 ## Features
 - Fetch all videos stored on the device.
