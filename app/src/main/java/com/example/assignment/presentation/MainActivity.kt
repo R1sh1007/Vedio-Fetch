@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
+   // This Method use for register request for video read permission
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         checkPermissionsAndLoadVideos()
     }
 
+
     private fun setUpView() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // hide and show progress bar
     private fun inProgessLoader() {
         vedioViewMode.isLoadingLiveData.observe(this@MainActivity) { isLoading ->
             binding.apply {
@@ -74,6 +76,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //when click on vedio in list then Open external video player (here i used mx player for external player)
     fun openVedio(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW).apply {
             setDataAndType(Uri.parse(uri), "video/*")
