@@ -2,10 +2,12 @@ package com.example.assignment.presentation
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -37,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-   // This Method use for register request for video read permission
+    // This Method use for register request for video read permission
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -63,7 +65,6 @@ class MainActivity : AppCompatActivity() {
                 adapter = VedioAdapter(it, { openVedio(it.uri) })
             }
         }
-
     }
 
     // hide and show progress bar
@@ -76,13 +77,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //when click on vedio in list then Open external video player (here i used mx player for external player)
-    fun openVedio(uri: String) {
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(Uri.parse(uri), "video/*")
-            setPackage("com.mxtech.videoplayer.ad")
+    private fun isPackageInstalled(packageName: String): Boolean {
+        return try {
+            packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
         }
-        startActivity(intent)
+    }
+
+    //when click on vedio in list then Open external video player (here i used mx player for external player) .
+    fun openVedio(uri: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(Uri.parse(uri), "video/*")
+                setPackage("com.mxtech.videoplayer.ad")
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Player is not installed.", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun checkPermissionsAndLoadVideos() {
