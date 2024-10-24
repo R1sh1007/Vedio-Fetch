@@ -77,15 +77,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun isPackageInstalled(packageName: String): Boolean {
-        return try {
-            packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
-            true
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
-        }
-    }
-
     //when click on vedio in list then Open external video player (here i used mx player for external player) .
     fun openVedio(uri: String) {
         try {
